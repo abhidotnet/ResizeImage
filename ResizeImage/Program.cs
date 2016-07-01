@@ -28,12 +28,20 @@ namespace ResizeImage
                 //httpClient.DefaultRequestHeaders.Add("MediaType", "multipart/form-data");
 
                 //setup data object
-                var listofFiles = Directory.EnumerateFiles(@"C:\Users\224003088\Pictures\iPhone", "*.JPG");
+                var listofFiles = Directory.EnumerateFiles(@"C:\Users\224003088\Pictures\iPhone\DCIM\961VCBLL", "*.JPG");
+                int xCounter = 1;
                 foreach(var file in listofFiles)
                 {
-                    Console.WriteLine(file);
+                Console.WriteLine(file);
+                var _outFile = @"c:\temp\"+ xCounter.ToString() + ".PNG";
+                xCounter++;
                 
-                HttpContent content = new StreamContent(readImageBytes(file));
+                if(xCounter % 20 == 0)
+                {
+                        //There is a governor limit of 20 images per minute. So making the process sleep.
+                        System.Threading.Thread.Sleep(60000);
+                }
+                    HttpContent content = new StreamContent(readImageBytes(file));
                 //HttpContent content = new StreamContent(readImageBytes(@"C:\Users\224003088\Pictures\iPhone\IMG_8689.JPG"));
                 content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
@@ -45,6 +53,10 @@ namespace ResizeImage
                 //Console.WriteLine(Convert.ToBase64String(responseContent.Result));
                 //Console.WriteLine(Convert.ToString(responseContent.Result.ToString()));
                 Console.WriteLine(BytesToSrcString(responseContent.Result));
+                FileStream _FileStream = new FileStream(_outFile, FileMode.Create, System.IO.FileAccess.Write);
+                _FileStream.WriteAsync(responseContent.Result, 0, responseContent.Result.Length);
+                _FileStream.Close();
+
                 }
             }
         }
