@@ -10,7 +10,7 @@ namespace ResizeImage
     {
         private static string BytesToSrcString(byte[] bytes) => "data:image/png;base64," + Convert.ToBase64String(bytes);
         private static Uri url = new Uri("https://api.projectoxford.ai/vision/v1.0/generateThumbnail?height=200&width=200&smartCropping=true");
-        private static string _apiKey = "6c950d05d6744c209b37fa26f3b67b38";
+        private static string _apiKey = "<YOUR_API_KEY>";
         static void Main(string[] args)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
